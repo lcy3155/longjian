@@ -18,7 +18,7 @@
                         <th>商品总金额</th>
                         <th>业务员</th>
                         <th>录入时间</th>
-                        <th>管理</th>
+                        <th style="width:110px;">管理</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -75,13 +75,16 @@ import { Dialog,Toast } from 'vant';
 					    totalPrice:"99999999",
 						checked:false,
 						newT:'2019/12/1',
+						salesman:'90909090',
 						role:'超级管理员'
 					},
 				]
 			}
 		},
 		created(){},
-		mounted(){},
+		mounted(){
+			this.data = this.$store.state.productData;
+		},
         methods:{
 			onClickLeft() {
 				this.$router.push({path:'/callCenter'})
@@ -99,6 +102,7 @@ import { Dialog,Toast } from 'vant';
 			// },
 			path_callBtn1(id){
 				console.log('修改',id)
+				this.$router.push({path:'/productModify',query:{id:id}}); 
 			},
 			path_callBtn2(id){
 				console.log('删除',id)

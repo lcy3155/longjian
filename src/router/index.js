@@ -17,6 +17,7 @@ import sellCenter from '@/views/server/sellCenter' //修改订单
 import SyntCenter from '@/views/server/SyntCenter' //新增订单产品
 // ---------
 import product from '@/views/server/product' //产品
+import productModify from '@/views/server/productModify' //产品
 
 // 以下是之前的---------------------------------------------------------------------------------------------------------
 
@@ -61,6 +62,12 @@ export default new Router({
       name: 'forget',
       component: forget
     },
+    //中心
+    {
+      path: '/setting',
+      name: 'setting',
+      component: setting
+     },
     //主页面
     {
       path: '/index',
@@ -123,11 +130,10 @@ export default new Router({
       name: 'product',
       component: product
     },
-    //中心
     {
-    path: '/setting',
-    name: 'setting',
-    component: setting
-   },
+      path: '/productModify',
+      name: 'productModify',
+      component: productModify
+    },
   ]
 })

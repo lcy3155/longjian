@@ -53,12 +53,30 @@
 
 		<!-- 右侧弹出搜索 -->
 		<van-popup v-model="show" position="right" :style="{ width: '70%',height: '100%' }" >
-			<van-search v-model="valueSearch" placeholder="请输入搜索关键词" />
+			<van-search v-model="SearchList.valueSearch" placeholder="请输入搜索关键词" />
+			<van-field v-model="SearchList.name" label="客户名称" disabled colon  border readonly label-align="right" placeholder="请输入客户名称"/>
+			<van-field v-model="SearchList.orderNo" label="订单编号" disabled colon  border readonly label-align="right" placeholder="请输入订单编号"/>
+			<van-field v-model="SearchList.contact" label="联系人" disabled colon  border readonly label-align="right" placeholder="请输入联系人"/>
+			<van-field colon  border clearable label-align="right" name="calendar" :value="SearchList.birthday" label="下单日期" placeholder="点击选择日期" @click="showCalendar = true"/>
+			<van-field colon  border clearable label-align="right" name="calendar" :value="SearchList.presentation" label="交单日期" placeholder="点击选择日期" @click="showCalendarL = true"/>
+			
+			<van-dropdown-menu>
+				<div class="dropdownLi">状态:</div>
+				<van-dropdown-item v-model="SearchList.value1" :options="option1"/>
+			</van-dropdown-menu>
+			<van-dropdown-menu>
+				<div class="dropdownLi">业务员:</div>
+				<van-dropdown-item v-model="SearchList.value2" :options="option2"/>
+			</van-dropdown-menu>
+			
+
 			<van-row type="flex" justify="space-around" class="callsebtn">
 				<van-button color="#49B377" @click="path_search">立即搜索</van-button>
 				<van-button color="#505050" @click="path_cancel">清空条件</van-button>
 			</van-row>
 		</van-popup>
+		<van-calendar :min-date="minDate" :max-date="maxDate" v-model="showCalendar" @confirm="onConfirm" />
+		<van-calendar :min-date="minDate" :max-date="maxDate" v-model="showCalendarL" @confirm="onConfirmL" />
 	</div>
 </template>
 
@@ -73,7 +91,16 @@ import { Dialog,Toast } from 'vant';
 			return {
 				list:[],
 				show:false,
-				valueSearch:'',
+				SearchList:{
+					valueSearch:'',
+					name:'',
+					orderNo:'',
+					contact:'',
+					birthday:'',
+					presentation:'',
+					value1:'',
+					value2:'',
+				},
 				fileList: [
 					// Uploader 根据文件后缀来判断是否为图片文件
 					// 如果图片 URL 中不包含类型信息，可以添加 isImage 标记来声明
@@ -81,6 +108,20 @@ import { Dialog,Toast } from 'vant';
 				],
 				currentPage:1,//当前页
 				addedShow:false,
+				minDate: new Date(1950, 0, 1),
+				maxDate: new Date(2021, 0, 31),
+				showCalendarL:false,
+				showCalendar:false,
+				option1: [
+					{ text: '请选择', value: '' },
+					{ text: '未处理', value: 1 },
+					{ text: '处理中', value: 2 },
+					{ text: '已完成', value: 3 },
+				],
+				option2: [
+					{ text: '请选择', value: '' },
+					{ text: '超级管理员', value: 1 },
+				],
 			}
 		},
 		mounted() {		
@@ -104,8 +145,13 @@ import { Dialog,Toast } from 'vant';
 			},
 			onConfirm(date) {
 				console.log(date)
-				this.personal.birthday = `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
-				this.personal.showCalendar = false;
+				this.SearchList.birthday = `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
+				this.showCalendar = false;
+			},
+			onConfirmL(date) {
+				console.log(date)
+				this.SearchList.presentation = `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
+				this.showCalendarL = false;
 			},
 			path_callBtn1(){
 				this.$router.push({path:'/SyntCenter'})
@@ -304,6 +350,14 @@ import { Dialog,Toast } from 'vant';
 .addedWapbtn{
 	background: #24AABB;
 	border: 1px solid #24AABB;
+}
+
+.dropdownLi{
+	position: relative;
+	box-sizing: border-box;
+    width: 90px;
+    text-align: right;
+	margin-top: -37px;
 }
 
 </style>
